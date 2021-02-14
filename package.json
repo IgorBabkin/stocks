@@ -27,6 +27,7 @@
     "morgan": "~1.10.0",
     "pino": "^6.5.0",
     "pino-express": "^1.1.1",
+    "reflect-metadata": "^0.1.13",
     "serve-favicon": "~2.5.0",
     "sqlite3": "^5.0.0",
     "ts-ioc-container": "^1.6.1",

@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import Boom from '@hapi/boom';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
@@ -5,8 +6,12 @@ import express from 'express';
 import path from 'path';
 import pino from 'pino';
 import {ExpressRequestHandlerFactory} from "./ExpressRequestHandlerFactory";
-import {ServiceLocatorFactory} from "ts-ioc-container";
 import {HomeAction} from "./controllers/home/HomeAction";
+import {ILocatorFactory} from "./di/ILocatorFactory";
+import {LocatorFactory} from "./di/LocatorFactory";
+import {EnvFactory} from "./env/EnvFactory";
+import {DevLocatorFactory} from "./di/DevLocatorFactory";
+import {ProdLocatorFactory} from "./di/ProdLocatorFactory";
 
 const logger = pino({});
 
@@ -22,8 +27,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const locator = new ServiceLocatorFactory().createIoCLocator();
-const handlerFactory = new ExpressRequestHandlerFactory(locator)
+const env = new EnvFactory().create();
+let locatorFactory: ILocatorFactory = new LocatorFactory();
+if (env.name === 'production') {
+    locatorFactory = new ProdLocatorFactory(locatorFactory);
+} else {
+    locatorFactory = new DevLocatorFactory(locatorFactory);
+}
+const handlerFactory = new ExpressRequestHandlerFactory(locatorFactory.create(env))
 app.get('/', handlerFactory.create(HomeAction));
 //app.use('/trades', trades);
 //app.use('/erase', erase);

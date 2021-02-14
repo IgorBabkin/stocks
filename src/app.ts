@@ -2,10 +2,11 @@ import Boom from '@hapi/boom';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import express from 'express';
-import expressPinoLogger from 'express-pino-logger';
 import path from 'path';
 import pino from 'pino';
-import { indexRouter } from './routes';
+import {ExpressRequestHandlerFactory} from "./ExpressRequestHandlerFactory";
+import {ServiceLocatorFactory} from "ts-ioc-container";
+import {HomeAction} from "./controllers/home/HomeAction";
 
 const logger = pino({});
 
@@ -21,8 +22,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-app.use('/', indexRouter);
+const locator = new ServiceLocatorFactory().createIoCLocator();
+const handlerFactory = new ExpressRequestHandlerFactory(locator)
+app.get('/', handlerFactory.create(HomeAction));
 //app.use('/trades', trades);
 //app.use('/erase', erase);
 //app.use('/stocks', stocks);

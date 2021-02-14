@@ -10,6 +10,8 @@
     "test": "NO_LOGS=true jest test"
   },
   "dependencies": {
+    "@hapi/boom": "^9.1.0",
+    "bluebird": "^3.7.2",
     "body-parser": "1.19.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
@@ -17,20 +19,19 @@
     "cookie-parser": "~1.4.5",
     "debug": "~4.1.1",
     "express": "~4.17.1",
+    "express-pino-logger": "^5.0.0",
     "jade": "~1.11.0",
     "jsonfile": "^6.0.1",
     "lodash": "^4.17.19",
     "moment": "^2.27.0",
     "morgan": "~1.10.0",
+    "pino": "^6.5.0",
+    "pino-express": "^1.1.1",
     "serve-favicon": "~2.5.0",
     "sqlite3": "^5.0.0",
-    "bluebird": "^3.7.2",
-    "typescript": "3.9.7",
-    "@hapi/boom": "^9.1.0",
+    "ts-ioc-container": "^1.6.1",
     "ts-node": "^8.10.2",
-    "express-pino-logger": "^5.0.0",
-    "pino": "^6.5.0",
-    "pino-express": "^1.1.1"
+    "typescript": "3.9.7"
   },
   "devDependencies": {
     "@types/node": "^12.12.54",

@@ -3,7 +3,7 @@ import {Request, Response} from 'express';
 import {IExpressAction} from "../framework/IExpressAction";
 import {SomeError} from "../domain/errors/SomeError";
 import {BadRequestError} from "../framework/errors/BadRequestError";
-import {ILogger, ILoggerKey} from "../services/ILogger";
+import {ILogger, ILoggerKey} from "../services/logger/ILogger";
 import {InternalError} from "../framework/errors/InternalError";
 
 export abstract class ExpressAction implements IExpressAction {

@@ -2,7 +2,7 @@ import {Request, Response} from "express";
 import {ExpressAction} from "../ExpressAction";
 import {HomeQueryHandler} from "./HomeQueryHandler";
 import {IMediator} from "../../mediator/IMediator";
-import {ILoggerFactory} from "../../services/ILoggerFactory";
+import {ILoggerFactory} from "../../services/logger/ILoggerFactory";
 
 export class HomeAction extends ExpressAction {
     constructor(mediator: IMediator, loggerFactory: ILoggerFactory) {

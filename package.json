@@ -35,14 +35,16 @@
     "typescript": "3.9.7"
   },
   "devDependencies": {
-    "@types/node": "^12.12.54",
-    "@types/morgan": "^1.9.1",
     "@types/express": "^4.17.7",
     "@types/hapi__boom": "^9.0.1",
     "@types/jest": "^26.0.7",
+    "@types/morgan": "^1.9.1",
+    "@types/node": "^12.12.54",
     "jest": "^26.1.0",
     "jest-extended": "^0.11.5",
     "jest-junit": "^11.1.0",
-    "ts-jest": "^26.1.4"
+    "moq.ts": "^7.2.0",
+    "ts-jest": "^26.1.4",
+    "unit-test-ts-ioc-container": "^1.4.3"
   }
 }

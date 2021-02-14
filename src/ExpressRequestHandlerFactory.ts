@@ -5,7 +5,7 @@ import {IExpressAction} from "./framework/IExpressAction";
 import {LoggerMiddleware} from "./middleware/LoggerMiddleware";
 import {BadRequestError} from "./framework/errors/BadRequestError";
 import {NotFoundError} from "./framework/errors/NotFoundError";
-import {ILoggerKey} from "./services/ILogger";
+import {ILoggerKey} from "./services/logger/ILogger";
 
 type constructor<T> = new (...args: any[]) => T;
 

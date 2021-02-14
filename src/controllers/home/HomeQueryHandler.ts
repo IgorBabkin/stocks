@@ -1,7 +1,8 @@
 import {QueryHandler} from "../../mediator/QueryHandler";
 import {Factory, inject} from "ts-ioc-container";
-import {ILogger, ILoggerKey} from "../../services/ILogger";
-import {ILoggerFactory} from "../../services/ILoggerFactory";
+import {ILogger, ILoggerKey} from "../../services/logger/ILogger";
+import {ILoggerFactory} from "../../services/logger/ILoggerFactory";
+import {ISomeService, ISomeServiceKey} from "../../services/someService/ISomeService";
 
 interface HomeQuery {
 }
@@ -15,6 +16,7 @@ export class HomeQueryHandler extends QueryHandler<HomeQuery, HomeResponse> {
 
     constructor(
         @inject(Factory(ILoggerKey)) loggerFactory: ILoggerFactory,
+        @inject(ISomeServiceKey) private someService: ISomeService,
     ) {
         super();
         this.logger = loggerFactory('HomeQueryHandler');
@@ -26,7 +28,7 @@ export class HomeQueryHandler extends QueryHandler<HomeQuery, HomeResponse> {
 
     async handle(payload: any): Promise<HomeResponse> {
         return {
-            greeting: 'Hello',
+            greeting: `Hello ${await this.someService.findSmth()}`,
         }
     }
 }

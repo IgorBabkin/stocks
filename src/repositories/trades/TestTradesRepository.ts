@@ -1,6 +1,8 @@
 import {ITrade} from "../../domain/ITrade";
 import {ITradesRepository} from "./ITradesRepository";
 import {UserId} from "../../domain/IUser";
+import {RangeType} from "../../core/RangeType";
+import {SymbolId} from "../../domain/ISymbol";
 
 export class TestTradesRepository implements ITradesRepository {
     fetchAll(): Promise<ITrade[]> {
@@ -50,5 +52,9 @@ export class TestTradesRepository implements ITradesRepository {
                 name: 'Daniel',
             }
         }]);
+    }
+
+    fetchBySymbol(id: SymbolId, dateRange?: RangeType<Date>): Promise<ITrade[]> {
+        return Promise.resolve([]);
     }
 }

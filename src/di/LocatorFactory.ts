@@ -5,8 +5,8 @@ import {ILoggerKey} from "../services/logger/ILogger";
 import {Logger} from "../services/logger/Logger";
 import {ISomeServiceKey} from "../services/someService/ISomeService";
 import {SomeService} from "../services/someService/SomeService";
-import {IStatsServiceKey} from "../services/historyService/IStatsService";
-import {StatsService} from "../services/historyService/StatsService";
+import {StatsService} from "../services/stats/StatsService";
+import {IStatsServiceKey} from "../services/stats/IStatsService";
 
 export class LocatorFactory implements ILocatorFactory {
     private locatorFactory = new ServiceLocatorFactory();

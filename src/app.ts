@@ -5,15 +5,15 @@ import cookieParser from 'cookie-parser';
 import express from 'express';
 import path from 'path';
 import pino from 'pino';
-import {ExpressRequestHandlerFactory} from "./ExpressRequestHandlerFactory";
-import {HomeAction} from "./controllers/home/HomeAction";
+import {ExpressActionFactory, ExpressRequestHandlerFactory, MediatorFactory} from "./presentation/framework";
+import {HomeAction} from "./presentation/actions/HomeAction";
 import {ILocatorFactory} from "./di/ILocatorFactory";
 import {LocatorFactory} from "./di/LocatorFactory";
 import {EnvFactory} from "./env/EnvFactory";
 import {DevLocatorFactory} from "./di/DevLocatorFactory";
 import {ProdLocatorFactory} from "./di/ProdLocatorFactory";
-import {ExpressActionFactory} from "./controllers/ExpressActionFactory";
-import {MediatorFactory} from "./MediatorFactory";
+import {LoggerMiddleware} from "./operation/middleware/LoggerMiddleware";
+import {SomeError} from "./domain/errors/SomeError";
 
 const logger = pino({});
 
@@ -21,11 +21,11 @@ const app = express();
 const port = 3002;
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'presentation', 'views'));
 app.set('view engine', 'jade');
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -36,7 +36,14 @@ if (env.name === 'production') {
 } else {
     locatorFactory = new DevLocatorFactory(locatorFactory);
 }
-const handlerFactory = new ExpressRequestHandlerFactory(locatorFactory.create(env), new MediatorFactory(), new ExpressActionFactory())
+const handlerFactory = new ExpressRequestHandlerFactory(
+    locatorFactory.create(env),
+    new MediatorFactory([LoggerMiddleware]),
+    new ExpressActionFactory({
+        badRequest: [],
+        notFound: [SomeError],
+    }),
+)
 app.get('/', handlerFactory.create(HomeAction));
 
 // catch 404 and forward to error handler
@@ -74,4 +81,4 @@ app.addListener('error', (error) => {
 
 app.listen(port, () => logger.info(`Example app listening at http://localhost:${port}`))
 
-export { app };
+export {app};

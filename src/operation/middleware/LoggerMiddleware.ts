@@ -1,7 +1,7 @@
-import {Middleware} from "../mediator/Middleware";
+import {Middleware} from "../../mediator/Middleware";
 import {Factory, inject} from "ts-ioc-container";
-import {ILogger, ILoggerKey} from "../services/logger/ILogger";
-import {ILoggerFactory} from "../services/logger/ILoggerFactory";
+import {ILogger, ILoggerKey} from "../../services/logger/ILogger";
+import {ILoggerFactory} from "../../services/logger/ILoggerFactory";
 
 export class LoggerMiddleware extends Middleware<any> {
     private logger: ILogger;

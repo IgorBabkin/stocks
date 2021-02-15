@@ -1,10 +1,9 @@
 import {IServiceLocator} from "ts-ioc-container";
 import {RequestHandler} from "express";
-import {IExpressAction} from "./framework/IExpressAction";
-import {IExpressActionFactory} from "./controllers/IExpressActionFactory";
+import {IExpressAction} from "./IExpressAction";
+import {IExpressActionFactory} from "./IExpressActionFactory";
 import {IMediatorFactory} from "./IMediatorFactory";
-
-export type constructor<T> = new (...args: any[]) => T;
+import { constructor } from "./commonTypes";
 
 export class ExpressRequestHandlerFactory {
     constructor(

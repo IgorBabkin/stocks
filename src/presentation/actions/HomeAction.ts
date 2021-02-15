@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
-import {HomeQueryHandler} from "./HomeQueryHandler";
+import {HomeQueryHandler} from "../../operation/useCases/HomeQueryHandler";
 import {IMediator} from "../../mediator/IMediator";
-import {IExpressAction} from "../../framework/IExpressAction";
+import {IExpressAction} from "../framework/IExpressAction";
 import {ILogger} from "../../services/logger/ILogger";
 
 export class HomeAction implements IExpressAction {

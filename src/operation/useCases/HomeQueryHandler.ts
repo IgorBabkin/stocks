@@ -32,3 +32,4 @@ export class HomeQueryHandler extends QueryHandler<HomeQuery, HomeResponse> {
         }
     }
 }
+

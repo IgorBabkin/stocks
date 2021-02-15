@@ -14,6 +14,7 @@ import {DevLocatorFactory} from "./di/DevLocatorFactory";
 import {ProdLocatorFactory} from "./di/ProdLocatorFactory";
 import {LoggerMiddleware} from "./operation/middleware/LoggerMiddleware";
 import {SomeError} from "./domain/errors/SomeError";
+import {ShowAllTradesAction} from "./presentation/actions/ShowAllTradesAction";
 
 const logger = pino({});
 
@@ -45,6 +46,7 @@ const handlerFactory = new ExpressRequestHandlerFactory(
     }),
 )
 app.get('/', handlerFactory.create(HomeAction));
+app.get('/trades', handlerFactory.create(ShowAllTradesAction));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

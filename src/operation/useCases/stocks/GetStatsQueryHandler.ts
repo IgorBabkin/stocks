@@ -29,7 +29,7 @@ export class GetStatsQueryHandler extends QueryHandler<GetStatsQuery, GetStatsRe
     async handle(query: GetStatsQuery): Promise<GetStatsResponse> {
         const [symbols, trades] = await Promise.all([
             this.symbolsRepository.fetchAll(),
-            this.tradesRepository.fetchAll()
+            this.tradesRepository.fetchAll(query.dateRange)
         ])
 
         return symbols.map(({id}) => {

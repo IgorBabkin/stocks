@@ -29,10 +29,10 @@ export class GetPriceExtremumQueryHandler extends QueryHandler<GetPriceExtremumQ
         if (trades.length === 0) {
             return undefined;
         }
-        const historyService = this.statsServiceFactory(trades);
+        const statsService = this.statsServiceFactory(trades);
         return {
-            minPrice: historyService.getMinPrice(),
-            maxPrice: historyService.getMaxPrice(),
+            minPrice: statsService.getMinPrice(),
+            maxPrice: statsService.getMaxPrice(),
         };
     }
 }

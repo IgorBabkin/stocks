@@ -4,12 +4,12 @@ import {Factory, inject} from "ts-ioc-container";
 import {ILoggerFactory} from "../../../services/logger/ILoggerFactory";
 import {ITradesRepository, ITradesRepositoryKey} from "../../../repositories/trades/ITradesRepository";
 
-interface EraseAllTradesQuery {
+interface DeleteTradesQuery {
 }
 
-type EraseAllTradesResponse = void;
+type DeleteTradesResponse = void;
 
-export class EraseAllTradesQueryHandler extends QueryHandler<EraseAllTradesQuery, EraseAllTradesResponse> {
+export class DeleteTradesQueryHandler extends QueryHandler<DeleteTradesQuery, DeleteTradesResponse> {
     private logger: ILogger;
 
     constructor(
@@ -17,10 +17,10 @@ export class EraseAllTradesQueryHandler extends QueryHandler<EraseAllTradesQuery
         @inject(ITradesRepositoryKey) private tradesRepository: ITradesRepository,
     ) {
         super();
-        this.logger = loggerFactory('ShowAllTradesQueryHandler');
+        this.logger = loggerFactory('GetTradesQueryHandler');
     }
 
-    async handle(payload: EraseAllTradesQuery): Promise<EraseAllTradesResponse> {
+    async handle(payload: DeleteTradesQuery): Promise<DeleteTradesResponse> {
         return this.tradesRepository.deleteAll();
     }
 }

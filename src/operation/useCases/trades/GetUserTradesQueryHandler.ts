@@ -4,13 +4,13 @@ import {ITradesRepository, ITradesRepositoryKey} from "../../../repositories/tra
 import {TradeResponseDTO} from "./TradeResponseDTO";
 import {IUsersRepository, IUsersRepositoryKey} from "../../../repositories/users/IUsersRepository";
 
-interface ShowUserTradesQuery {
+interface GetUserTradesQuery {
     userID: string;
 }
 
-type ShowUserTradesResponse = TradeResponseDTO[];
+type GetUserTradesResponse = TradeResponseDTO[];
 
-export class ShowUserTradesQueryHandler extends QueryHandler<ShowUserTradesQuery, ShowUserTradesResponse> {
+export class GetUserTradesQueryHandler extends QueryHandler<GetUserTradesQuery, GetUserTradesResponse> {
     constructor(
         @inject(ITradesRepositoryKey) private tradesRepository: ITradesRepository,
         @inject(IUsersRepositoryKey) private usersRepository: IUsersRepository,
@@ -18,7 +18,7 @@ export class ShowUserTradesQueryHandler extends QueryHandler<ShowUserTradesQuery
         super();
     }
 
-    async handle({userID}: ShowUserTradesQuery): Promise<ShowUserTradesResponse> {
+    async handle({userID}: GetUserTradesQuery): Promise<GetUserTradesResponse> {
         const user = await this.usersRepository.findById(userID);
         const trades = await this.tradesRepository.fetchByUser(user.id);
         return trades.map((trade) => {

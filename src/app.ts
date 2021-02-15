@@ -12,6 +12,8 @@ import {LocatorFactory} from "./di/LocatorFactory";
 import {EnvFactory} from "./env/EnvFactory";
 import {DevLocatorFactory} from "./di/DevLocatorFactory";
 import {ProdLocatorFactory} from "./di/ProdLocatorFactory";
+import {ExpressActionFactory} from "./controllers/ExpressActionFactory";
+import {MediatorFactory} from "./MediatorFactory";
 
 const logger = pino({});
 
@@ -34,11 +36,8 @@ if (env.name === 'production') {
 } else {
     locatorFactory = new DevLocatorFactory(locatorFactory);
 }
-const handlerFactory = new ExpressRequestHandlerFactory(locatorFactory.create(env))
+const handlerFactory = new ExpressRequestHandlerFactory(locatorFactory.create(env), new MediatorFactory(), new ExpressActionFactory())
 app.get('/', handlerFactory.create(HomeAction));
-//app.use('/trades', trades);
-//app.use('/erase', erase);
-//app.use('/stocks', stocks);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

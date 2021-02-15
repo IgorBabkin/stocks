@@ -1,15 +1,15 @@
 import {Request, Response} from "express";
-import {ExpressAction} from "../ExpressAction";
 import {HomeQueryHandler} from "./HomeQueryHandler";
 import {IMediator} from "../../mediator/IMediator";
-import {ILoggerFactory} from "../../services/logger/ILoggerFactory";
+import {IExpressAction} from "../../framework/IExpressAction";
+import {ILogger} from "../../services/logger/ILogger";
 
-export class HomeAction extends ExpressAction {
-    constructor(mediator: IMediator, loggerFactory: ILoggerFactory) {
-        super(mediator, loggerFactory('HomeAction'));
+export class HomeAction implements IExpressAction {
+    constructor(private mediator: IMediator, private logger: ILogger) {
     }
 
-    protected async process(request: Request, response: Response): Promise<void> {
+    async execute(request: Request, response: Response): Promise<void> {
+        this.logger.log('HEY');
         const queryResponse = await this.mediator.send(HomeQueryHandler, {a: 'hey'});
         response.render('index', {title: `Express ${queryResponse.greeting}`})
     }

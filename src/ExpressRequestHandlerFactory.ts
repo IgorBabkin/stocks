@@ -1,38 +1,26 @@
 import {IServiceLocator} from "ts-ioc-container";
-import {Mediator} from "./mediator/Mediator";
 import {RequestHandler} from "express";
 import {IExpressAction} from "./framework/IExpressAction";
-import {LoggerMiddleware} from "./middleware/LoggerMiddleware";
-import {BadRequestError} from "./framework/errors/BadRequestError";
-import {NotFoundError} from "./framework/errors/NotFoundError";
-import {ILoggerKey} from "./services/logger/ILogger";
+import {IExpressActionFactory} from "./controllers/IExpressActionFactory";
+import {IMediatorFactory} from "./IMediatorFactory";
 
-type constructor<T> = new (...args: any[]) => T;
+export type constructor<T> = new (...args: any[]) => T;
 
 export class ExpressRequestHandlerFactory {
-    constructor(private locator: IServiceLocator) {
+    constructor(
+        private locator: IServiceLocator,
+        private mediatorFactory: IMediatorFactory,
+        private actionFactory: IExpressActionFactory,
+    ) {
     }
 
     create(actionConstructor: constructor<IExpressAction>): RequestHandler {
         return async (request, response) => {
             const childContainer = this.locator.createContainer(request);
-            const mediator = new Mediator(childContainer, [
-                childContainer.resolve(LoggerMiddleware)
-            ]);
-            const action = new actionConstructor(mediator, (prefix: string) => childContainer.resolve(ILoggerKey, prefix));
-            try {
-                await action.execute(request, response);
-            } catch (e) {
-                if (e instanceof BadRequestError) {
-                    response.status(400).send(e.message);
-                } else if (e instanceof NotFoundError) {
-                    response.status(404).send(e.message);
-                } else {
-                    response.status(500).send(e.message);
-                }
-            } finally {
-                childContainer.remove();
-            }
+            const mediator = this.mediatorFactory.create(childContainer);
+            const action = this.actionFactory.create(actionConstructor, mediator, childContainer);
+            await action.execute(request, response);
+            childContainer.remove();
         }
     }
 }

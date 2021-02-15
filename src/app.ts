@@ -14,11 +14,12 @@ import {DevLocatorFactory} from "./di/DevLocatorFactory";
 import {ProdLocatorFactory} from "./di/ProdLocatorFactory";
 import {LoggerMiddleware} from "./operation/middleware/LoggerMiddleware";
 import {SomeError} from "./domain/errors/SomeError";
-import {ShowAllTradesAction} from "./presentation/actions/trades/ShowAllTradesAction";
+import {GetTradesAction} from "./presentation/actions/trades/GetTradesAction";
 import {CreateTradeAction} from "./presentation/actions/trades/CreateTradeAction";
 import {CollisionError} from "./domain/errors/CollisionError";
-import {EraseAllTradesAction} from "./presentation/actions/trades/EraseAllTradesAction";
-import {ShowUserTradesAction} from "./presentation/actions/trades/ShowUserTradesAction";
+import {DeleteTradesAction} from "./presentation/actions/trades/DeleteTradesAction";
+import {GetUserTradesAction} from "./presentation/actions/trades/GetUserTradesAction";
+import {GetPriceExtremumAction} from "./presentation/actions/stocks/GetPriceExtremumAction";
 
 const logger = pino({});
 
@@ -50,10 +51,11 @@ const handlerFactory = new ExpressRequestHandlerFactory(
     }),
 )
 app.get('/', handlerFactory.create(HomeAction));
-app.get('/trades', handlerFactory.create(ShowAllTradesAction));
+app.get('/trades', handlerFactory.create(GetTradesAction));
 app.post('/trades', handlerFactory.create(CreateTradeAction));
-app.delete('/erase', handlerFactory.create(EraseAllTradesAction));
-app.get('/trades/users/:userID', handlerFactory.create(ShowUserTradesAction));
+app.delete('/erase', handlerFactory.create(DeleteTradesAction));
+app.get('/trades/users/:userID', handlerFactory.create(GetUserTradesAction));
+app.get('/stocks/:symbol/price', handlerFactory.create(GetPriceExtremumAction));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

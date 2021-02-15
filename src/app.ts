@@ -20,6 +20,7 @@ import {CollisionError} from "./domain/errors/CollisionError";
 import {DeleteTradesAction} from "./presentation/actions/trades/DeleteTradesAction";
 import {GetUserTradesAction} from "./presentation/actions/trades/GetUserTradesAction";
 import {GetPriceExtremumAction} from "./presentation/actions/stocks/GetPriceExtremumAction";
+import {GetStatsAction} from "./presentation/actions/stocks/GetStatsAction";
 
 const logger = pino({});
 
@@ -56,6 +57,7 @@ app.post('/trades', handlerFactory.create(CreateTradeAction));
 app.delete('/erase', handlerFactory.create(DeleteTradesAction));
 app.get('/trades/users/:userID', handlerFactory.create(GetUserTradesAction));
 app.get('/stocks/:symbol/price', handlerFactory.create(GetPriceExtremumAction));
+app.get('/stocks/stats', handlerFactory.create(GetStatsAction));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

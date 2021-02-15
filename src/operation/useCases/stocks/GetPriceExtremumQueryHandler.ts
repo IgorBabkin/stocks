@@ -3,9 +3,9 @@ import {Factory, inject} from "ts-ioc-container";
 import {ITradesRepository, ITradesRepositoryKey} from "../../../repositories/trades/ITradesRepository";
 import {SymbolId} from "../../../domain/ISymbol";
 import {ISymbolsRepository, ISymbolsRepositoryKey} from "../../../repositories/symbols/ISymbolsRepository";
-import {IHistoryServiceFactory, IHistoryServiceKey} from "../../../services/historyService/IHistoryService";
 import {Money} from "../../../domain/Money";
 import {RangeType} from "../../../core/RangeType";
+import {IStatsServiceFactory, IStatsServiceKey} from "../../../services/stats/IStatsService";
 
 interface GetPriceExtremumQuery {
     symbol: SymbolId;
@@ -18,21 +18,21 @@ export class GetPriceExtremumQueryHandler extends QueryHandler<GetPriceExtremumQ
     constructor(
         @inject(ITradesRepositoryKey) private tradesRepository: ITradesRepository,
         @inject(ISymbolsRepositoryKey) private symbolsRepository: ISymbolsRepository,
-        @inject(Factory(IHistoryServiceKey)) private historyServiceFactory: IHistoryServiceFactory,
+        @inject(Factory(IStatsServiceKey)) private statsServiceFactory: IStatsServiceFactory,
     ) {
         super();
     }
 
     async handle(query: GetPriceExtremumQuery): Promise<GetPriceExtremumResponse> {
         const symbol = await this.symbolsRepository.findById(query.symbol);
-        const trades = await this.tradesRepository.fetchBySymbol(symbol.id);
+        const trades = await this.tradesRepository.fetchBySymbol(symbol.id, query.dateRange);
         if (trades.length === 0) {
             return undefined;
         }
-        const historyService = this.historyServiceFactory(trades);
+        const historyService = this.statsServiceFactory(trades);
         return {
-            minPrice: historyService.getMinPrice(query.dateRange),
-            maxPrice: historyService.getMaxPrice(query.dateRange),
+            minPrice: historyService.getMinPrice(),
+            maxPrice: historyService.getMaxPrice(),
         };
     }
 }

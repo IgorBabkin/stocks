@@ -14,7 +14,9 @@ import {DevLocatorFactory} from "./di/DevLocatorFactory";
 import {ProdLocatorFactory} from "./di/ProdLocatorFactory";
 import {LoggerMiddleware} from "./operation/middleware/LoggerMiddleware";
 import {SomeError} from "./domain/errors/SomeError";
-import {ShowAllTradesAction} from "./presentation/actions/ShowAllTradesAction";
+import {ShowAllTradesAction} from "./presentation/actions/trades/ShowAllTradesAction";
+import {CreateTradeAction} from "./presentation/actions/trades/CreateTradeAction";
+import {CollisionError} from "./domain/errors/CollisionError";
 
 const logger = pino({});
 
@@ -41,12 +43,13 @@ const handlerFactory = new ExpressRequestHandlerFactory(
     locatorFactory.create(env),
     new MediatorFactory([LoggerMiddleware]),
     new ExpressActionFactory({
-        badRequest: [],
+        badRequest: [CollisionError],
         notFound: [SomeError],
     }),
 )
 app.get('/', handlerFactory.create(HomeAction));
 app.get('/trades', handlerFactory.create(ShowAllTradesAction));
+app.post('/trades', handlerFactory.create(CreateTradeAction));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

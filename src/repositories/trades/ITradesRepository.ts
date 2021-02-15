@@ -6,5 +6,7 @@ export interface ITradesRepository {
     fetchAll(): Promise<ITrade[]>;
 
     create(query: ITrade): Promise<ITrade>;
+
+    deleteAll(): Promise<void>;
 }
 

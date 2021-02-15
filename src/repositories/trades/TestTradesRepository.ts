@@ -31,4 +31,8 @@ export class TestTradesRepository implements ITradesRepository {
             }
         });
     }
+
+    deleteAll(): Promise<void> {
+        return Promise.resolve(undefined);
+    }
 }

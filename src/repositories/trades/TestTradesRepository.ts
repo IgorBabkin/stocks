@@ -1,5 +1,6 @@
 import {ITrade} from "../../domain/ITrade";
 import {ITradesRepository} from "./ITradesRepository";
+import {UserId} from "../../domain/IUser";
 
 export class TestTradesRepository implements ITradesRepository {
     fetchAll(): Promise<ITrade[]> {
@@ -34,5 +35,20 @@ export class TestTradesRepository implements ITradesRepository {
 
     deleteAll(): Promise<void> {
         return Promise.resolve(undefined);
+    }
+
+    fetchByUser(id: UserId): Promise<ITrade[]> {
+        return Promise.resolve([{
+            id: '21',
+            price: 1234,
+            shares: 20,
+            symbol: 'USD',
+            timestamp: new Date(),
+            type: 'buy',
+            user: {
+                id: '2',
+                name: 'Daniel',
+            }
+        }]);
     }
 }

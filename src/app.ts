@@ -18,6 +18,7 @@ import {ShowAllTradesAction} from "./presentation/actions/trades/ShowAllTradesAc
 import {CreateTradeAction} from "./presentation/actions/trades/CreateTradeAction";
 import {CollisionError} from "./domain/errors/CollisionError";
 import {EraseAllTradesAction} from "./presentation/actions/trades/EraseAllTradesAction";
+import {ShowUserTradesAction} from "./presentation/actions/trades/ShowUserTradesAction";
 
 const logger = pino({});
 
@@ -52,6 +53,7 @@ app.get('/', handlerFactory.create(HomeAction));
 app.get('/trades', handlerFactory.create(ShowAllTradesAction));
 app.post('/trades', handlerFactory.create(CreateTradeAction));
 app.delete('/erase', handlerFactory.create(EraseAllTradesAction));
+app.get('/trades/users/:userID', handlerFactory.create(ShowUserTradesAction));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

@@ -1,16 +1,13 @@
 import {Middleware} from "../../mediator/Middleware";
-import {Factory, inject} from "ts-ioc-container";
+import {inject} from "ts-ioc-container";
 import {ILogger, ILoggerKey} from "../../services/logger/ILogger";
-import {ILoggerFactory} from "../../services/logger/ILoggerFactory";
+import {args} from "ts-ioc-container/cjm/helpers";
 
 export class LoggerMiddleware extends Middleware<any> {
-    private logger: ILogger;
-
     constructor(
-        @inject(Factory(ILoggerKey)) loggerFactory: ILoggerFactory
+        @inject(ILoggerKey, args('LoggerMiddleware')) private logger: ILogger,
     ) {
         super();
-        this.logger = loggerFactory('LoggerMiddleware');
     }
 
     async preProcess(query: any): Promise<void> {

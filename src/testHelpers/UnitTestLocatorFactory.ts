@@ -1,13 +1,16 @@
-import {IUnitTestServiceLocator, UnitTestServiceLocatorFactory} from "unit-test-ts-ioc-container";
+import {UnitTestServiceLocator, IUnitTestServiceLocator} from "unit-test-ts-ioc-container";
 import {Mock} from "moq.ts";
+import {IocServiceLocatorStrategyFactory, metadataCollector} from "ts-ioc-container";
 import {MoqFactory} from "./moq/MoqFactory";
 
 export type MoqUnitTestServiceLocator = IUnitTestServiceLocator<Mock<any>>;
 
 export class UnitTestLocatorFactory {
-    private factory = new UnitTestServiceLocatorFactory(new MoqFactory())
+    private strategyFactory = new IocServiceLocatorStrategyFactory(metadataCollector);
+    private hooks = [];
+    private mockFactory = new MoqFactory();
 
     create(): MoqUnitTestServiceLocator {
-        return this.factory.createIoCLocator();
+        return new UnitTestServiceLocator(this.strategyFactory, this.hooks, this.mockFactory);
     }
 }

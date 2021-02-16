@@ -3,6 +3,7 @@ import {Factory, inject} from "ts-ioc-container";
 import {ILogger, ILoggerKey} from "../../services/logger/ILogger";
 import {ILoggerFactory} from "../../services/logger/ILoggerFactory";
 import {ISomeService, ISomeServiceKey} from "../../services/someService/ISomeService";
+import {args} from "ts-ioc-container/cjm/helpers";
 
 interface HomeQuery {
 }
@@ -12,14 +13,11 @@ interface HomeResponse {
 }
 
 export class HomeQueryHandler extends QueryHandler<HomeQuery, HomeResponse> {
-    private logger: ILogger;
-
     constructor(
-        @inject(Factory(ILoggerKey)) loggerFactory: ILoggerFactory,
+        @inject(ILoggerKey, args('HomeQueryHandler')) private logger: ILogger,
         @inject(ISomeServiceKey) private someService: ISomeService,
     ) {
         super();
-        this.logger = loggerFactory('HomeQueryHandler');
     }
 
     async preHandle(payload: any): Promise<void> {

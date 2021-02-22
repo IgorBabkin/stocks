@@ -8,8 +8,8 @@ export class DeleteTradesAction implements IExpressAction {
     constructor(private mediator: IMediator, private logger: ILogger) {
     }
 
-    async execute(request: Request, response: Response): Promise<void> {
+    async execute(request: Request, response: Response): Promise<Response> {
         await this.mediator.send(DeleteTradesQueryHandler, {});
-        response.status(200).send();
+        return response.status(200).send();
     }
 }

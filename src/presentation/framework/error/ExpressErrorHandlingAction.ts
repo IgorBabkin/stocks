@@ -7,17 +7,17 @@ export class ExpressErrorHandlingAction implements IExpressAction {
     constructor(private action: IExpressAction, private logger: ILogger, private errors: IErrorConfig) {
     }
 
-    async execute(request: Request, response: Response): Promise<void> {
+    async execute(request: Request, response: Response): Promise<Response> {
         try {
-            await this.action.execute(request, response);
+            return await this.action.execute(request, response);
         } catch (e) {
             this.logger.error(`${e.name}: ${e.message}. Stack: ${e.stack}`);
             if (this.isBadRequestError(e)) {
-                response.status(400).send(`${e.name}: ${e.message}`);
+                return response.status(400).send(`${e.name}: ${e.message}`);
             } else if (this.isNotFoundError(e)) {
-                response.status(404).send(`${e.name}: ${e.message}`);
+                return response.status(404).send(`${e.name}: ${e.message}`);
             } else {
-                response.status(500).send(`${e.name}: ${e.message}`);
+                return response.status(500).send(`${e.name}: ${e.message}`);
             }
         }
     }

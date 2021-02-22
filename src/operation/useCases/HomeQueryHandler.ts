@@ -1,9 +1,7 @@
 import {QueryHandler} from "../../mediator/QueryHandler";
-import {Factory, inject} from "ts-ioc-container";
+import {args, inject} from "ts-ioc-container";
 import {ILogger, ILoggerKey} from "../../services/logger/ILogger";
-import {ILoggerFactory} from "../../services/logger/ILoggerFactory";
 import {ISomeService, ISomeServiceKey} from "../../services/someService/ISomeService";
-import {args} from "ts-ioc-container/cjm/helpers";
 
 interface HomeQuery {
 }

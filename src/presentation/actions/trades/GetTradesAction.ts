@@ -8,8 +8,8 @@ export class GetTradesAction implements IExpressAction {
     constructor(private mediator: IMediator, private logger: ILogger) {
     }
 
-    async execute(request: Request, response: Response): Promise<void> {
+    async execute(request: Request, response: Response): Promise<Response> {
         const trades = await this.mediator.send(GetTradesQueryHandler, {});
-        response.json(trades);
+        return response.json(trades);
     }
 }

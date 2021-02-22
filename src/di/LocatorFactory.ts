@@ -1,4 +1,10 @@
-import {IInstanceHook, IocServiceLocatorStrategyFactory, metadataCollector, ServiceLocator} from "ts-ioc-container";
+import {
+    IInstanceHook,
+    IocServiceLocatorStrategyFactory,
+    metadataCollector,
+    Provider,
+    ServiceLocator
+} from "ts-ioc-container";
 import {IEnv} from "../env/IEnv";
 import {ILocatorFactory} from "./ILocatorFactory";
 import {ILoggerKey} from "../services/logger/ILogger";
@@ -14,9 +20,9 @@ export class LocatorFactory implements ILocatorFactory {
 
     create(env: IEnv) {
         const locator = new ServiceLocator(this.strategyFactory, this.hooks);
-        locator.registerConstructor(ILoggerKey, Logger);
-        locator.registerConstructor(ISomeServiceKey, SomeService);
-        locator.registerConstructor(IStatsServiceKey, StatsService);
+        locator.register(ILoggerKey, Provider.fromConstructor(Logger));
+        locator.register(ISomeServiceKey, Provider.fromConstructor(SomeService));
+        locator.register(IStatsServiceKey, Provider.fromConstructor(StatsService));
         return locator;
     }
 }

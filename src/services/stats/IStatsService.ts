@@ -1,15 +1,11 @@
-import {ITrade} from "../../domain/ITrade";
 import {Money} from "../../domain/Money";
+import {ICandlestick} from "../../domain/ICandlestick";
 
-export type IStatsServiceFactory = (trades: ITrade[]) => IStatsService;
+export type IStatsServiceFactory = (candles: ICandlestick[]) => IStatsService;
 export const IStatsServiceKey = 'IStatsService';
 
 export interface IStatsService {
     hasData: Boolean;
-
-    getMinPrice(): Money;
-
-    getMaxPrice(): Money;
 
     getMaxPriceFall(): Money;
 

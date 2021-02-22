@@ -3,7 +3,7 @@ import {RequestHandler} from "express";
 import {IExpressAction} from "./IExpressAction";
 import {IExpressActionFactory} from "./IExpressActionFactory";
 import {IMediatorFactory} from "./IMediatorFactory";
-import { constructor } from "./commonTypes";
+import {constructor} from "./commonTypes";
 
 export class ExpressRequestHandlerFactory {
     constructor(
@@ -16,10 +16,14 @@ export class ExpressRequestHandlerFactory {
     create(actionConstructor: constructor<IExpressAction>): RequestHandler {
         return async (request, response) => {
             const childContainer = this.locator.createContainer(request);
-            const mediator = this.mediatorFactory.create(childContainer);
-            const action = this.actionFactory.create(actionConstructor, mediator, childContainer);
-            await action.execute(request, response);
+            const action = this.actionFactory.create(
+                actionConstructor,
+                this.mediatorFactory.create(childContainer),
+                childContainer,
+            );
+            const result = await action.execute(request, response);
             childContainer.remove();
+            return result;
         }
     }
 }

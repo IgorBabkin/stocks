@@ -9,13 +9,13 @@ export class GetStatsAction implements IExpressAction {
     constructor(private mediator: IMediator, private logger: ILogger) {
     }
 
-    async execute(request: Request, response: Response): Promise<void> {
+    async execute(request: Request, response: Response): Promise<Response> {
         const {start, end} = request.query;
         const stats = await this.mediator.send(GetStatsQueryHandler, {
             dateRange: new RangeType(new Date(start as string), new Date(end as string))
         });
 
-        response.json(stats.map(({symbol, stats}) => {
+        return response.json(stats.map(({symbol, stats}) => {
             return stats
                 ? {
                     symbol,

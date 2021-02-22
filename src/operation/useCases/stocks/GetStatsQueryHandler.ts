@@ -27,13 +27,13 @@ export class GetStatsQueryHandler extends QueryHandler<GetStatsQuery, GetStatsRe
     }
 
     async handle(query: GetStatsQuery): Promise<GetStatsResponse> {
-        const [symbols, trades] = await Promise.all([
+        const [symbols, candles] = await Promise.all([
             this.symbolsRepository.fetchAll(),
-            this.tradesRepository.fetchAll(query.dateRange)
+            this.tradesRepository.fetchDailyCandles(query.dateRange)
         ])
 
         return symbols.map(({id}) => {
-            const statsService = this.statsServiceFactory(trades.filter(({symbol}) => symbol === id));
+            const statsService = this.statsServiceFactory(candles.filter(({symbol}) => symbol === id));
             return {
                 symbol: id,
                 stats: statsService.hasData

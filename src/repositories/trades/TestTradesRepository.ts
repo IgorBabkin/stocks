@@ -58,3 +58,32 @@ export class TestTradesRepository implements ITradesRepository {
         return Promise.resolve([]);
     }
 }
+
+/*
+SELECT
+	start_table.start_price,
+	end_table.end_price,
+	start_table.created_date
+FROM (
+	SELECT DISTINCT ON (created_date)
+		created_date,
+		price as start_price
+	FROM (
+		SELECT price, id, date(created_at) as created_date
+		FROM trades
+		ORDER BY created_at ASC
+	) AS t1
+) as start_table
+INNER JOIN
+(
+	SELECT DISTINCT ON (created_date)
+		created_date,
+		price as end_price
+	FROM (
+		SELECT price, id, date(created_at) as created_date
+		FROM trades
+		ORDER BY created_at DESC
+	) AS t1
+) as end_table
+ON start_table.created_date = end_table.created_date
+ */

@@ -12,5 +12,9 @@ export interface IStatsService {
     getMaxPriceRise(): Money;
 
     getFluctuationsCount(): number;
+
+    getMaxPrice(): Money;
+
+    getMinPrice(): Money;
 }
 

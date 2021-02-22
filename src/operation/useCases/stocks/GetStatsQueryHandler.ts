@@ -1,8 +1,8 @@
 import {QueryHandler} from "../../../mediator/QueryHandler";
 import {Factory, inject} from "ts-ioc-container";
 import {ITradesRepository, ITradesRepositoryKey} from "../../../repositories/trades/ITradesRepository";
-import {SymbolId} from "../../../domain/ISymbol";
-import {ISymbolsRepository, ISymbolsRepositoryKey} from "../../../repositories/symbols/ISymbolsRepository";
+import {SymbolId} from "../../../domain/ITradeSymbol";
+import {ITradeSymbolsRepository, ITradeSymbolsRepositoryKey} from "../../../repositories/symbols/ITradeSymbolsRepository";
 import {Money} from "../../../domain/Money";
 import {RangeType} from "../../../core/RangeType";
 import {IStatsServiceFactory, IStatsServiceKey} from "../../../services/stats/IStatsService";
@@ -20,7 +20,7 @@ type GetStatsResponse = {
 export class GetStatsQueryHandler extends QueryHandler<GetStatsQuery, GetStatsResponse> {
     constructor(
         @inject(ITradesRepositoryKey) private tradesRepository: ITradesRepository,
-        @inject(ISymbolsRepositoryKey) private symbolsRepository: ISymbolsRepository,
+        @inject(ITradeSymbolsRepositoryKey) private symbolsRepository: ITradeSymbolsRepository,
         @inject(Factory(IStatsServiceKey)) private statsServiceFactory: IStatsServiceFactory,
     ) {
         super();
@@ -33,7 +33,7 @@ export class GetStatsQueryHandler extends QueryHandler<GetStatsQuery, GetStatsRe
         ])
 
         return symbols.map(({id}) => {
-            const statsService = this.statsServiceFactory(candles.filter(({symbol}) => symbol === id));
+            const statsService = this.statsServiceFactory(candles[id] || []);
             return {
                 symbol: id,
                 stats: statsService.hasData

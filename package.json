@@ -28,6 +28,7 @@
     "moment": "^2.27.0",
     "mongoose": "^5.11.17",
     "morgan": "~1.10.0",
+    "pg": "^8.5.1",
     "pino": "^6.5.0",
     "pino-express": "^1.1.1",
     "reflect-metadata": "^0.1.13",
@@ -35,6 +36,7 @@
     "sqlite3": "^5.0.0",
     "ts-ioc-container": "^3.1.2",
     "ts-node": "^8.10.2",
+    "typeorm": "^0.2.31",
     "typescript": "3.9.7"
   },
   "devDependencies": {
@@ -42,7 +44,7 @@
     "@types/hapi__boom": "^9.0.1",
     "@types/jest": "^26.0.7",
     "@types/morgan": "^1.9.1",
-    "@types/node": "^12.12.54",
+    "@types/node": "^12.20.4",
     "jest": "^26.1.0",
     "jest-extended": "^0.11.5",
     "jest-junit": "^11.1.0",

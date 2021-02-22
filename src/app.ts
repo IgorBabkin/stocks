@@ -21,6 +21,9 @@ import {DeleteTradesAction} from "./presentation/actions/trades/DeleteTradesActi
 import {GetUserTradesAction} from "./presentation/actions/trades/GetUserTradesAction";
 import {GetPriceExtremumAction} from "./presentation/actions/stocks/GetPriceExtremumAction";
 import {GetStatsAction} from "./presentation/actions/stocks/GetStatsAction";
+import {ConnectionOptions, createConnection, EntityNotFoundError} from "typeorm";
+import ormconfig from "../ormconfig.json";
+import {DomainNotFoundError} from "./domain/errors/DomainNotFoundError";
 
 const logger = pino({});
 
@@ -36,28 +39,32 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const env = new EnvFactory().create();
-let locatorFactory: ILocatorFactory = new LocatorFactory();
-if (env.name === 'production') {
-    locatorFactory = new ProdLocatorFactory(locatorFactory);
-} else {
-    locatorFactory = new DevLocatorFactory(locatorFactory);
-}
-const handlerFactory = new ExpressRequestHandlerFactory(
-    locatorFactory.create(env),
-    new MediatorFactory([LoggerMiddleware]),
-    new ExpressActionFactory({
-        badRequest: [CollisionError],
-        notFound: [SomeError],
-    }),
-)
-app.get('/', handlerFactory.create(HomeAction));
-app.get('/trades', handlerFactory.create(GetTradesAction));
-app.post('/trades', handlerFactory.create(CreateTradeAction));
-app.delete('/erase', handlerFactory.create(DeleteTradesAction));
-app.get('/trades/users/:userID', handlerFactory.create(GetUserTradesAction));
-app.get('/stocks/:symbol/price', handlerFactory.create(GetPriceExtremumAction));
-app.get('/stocks/stats', handlerFactory.create(GetStatsAction));
+(async () => {
+    const env = new EnvFactory().create();
+    const connection = await createConnection(ormconfig as ConnectionOptions);
+    let locatorFactory: ILocatorFactory = new LocatorFactory(connection);
+    if (env.name === 'production') {
+        locatorFactory = new ProdLocatorFactory(locatorFactory);
+    } else {
+        locatorFactory = new DevLocatorFactory(locatorFactory);
+    }
+    const handlerFactory = new ExpressRequestHandlerFactory(
+        locatorFactory.create(env),
+        new MediatorFactory([LoggerMiddleware]),
+        new ExpressActionFactory({
+            badRequest: [CollisionError, DomainNotFoundError],
+            notFound: [SomeError],
+        }),
+    )
+    app.get('/', handlerFactory.create(HomeAction));
+    app.get('/trades', handlerFactory.create(GetTradesAction));
+    app.post('/trades', handlerFactory.create(CreateTradeAction));
+    app.delete('/erase', handlerFactory.create(DeleteTradesAction));
+    app.get('/trades/users/:userID', handlerFactory.create(GetUserTradesAction));
+    app.get('/stocks/:symbol/price', handlerFactory.create(GetPriceExtremumAction));
+    app.get('/stocks/stats', handlerFactory.create(GetStatsAction));
+})()
+
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

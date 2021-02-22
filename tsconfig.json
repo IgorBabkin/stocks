@@ -17,6 +17,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "resolveJsonModule": true,
+    "strictPropertyInitialization": false,
     "lib": [
       "es2018",
       "DOM"

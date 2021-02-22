@@ -8,12 +8,12 @@ export class StatsService implements IStatsService {
 
     getMinPrice(): Money {
         const first = this.candles[0];
-        return this.candles.reduce((acc, {price}) => Math.min(acc, price), first.price);
+        return this.candles.reduce((acc, {lowestPrice}) => Math.min(acc, lowestPrice), first.lowestPrice);
     }
 
     getMaxPrice(): Money {
         const first = this.candles[0];
-        return this.candles.reduce((acc, {price}) => Math.max(acc, price), first.price);
+        return this.candles.reduce((acc, {highestPrice}) => Math.max(acc, highestPrice), first.highestPrice);
     }
 
     get hasData(): Boolean {

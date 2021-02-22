@@ -1,7 +1,7 @@
 import {TradeId} from "../../../domain/ITrade";
 import {TradeType} from "../../../domain/TradeType";
 import {UserId} from "../../../domain/IUser";
-import {SymbolId} from "../../../domain/ISymbol";
+import {SymbolId} from "../../../domain/ITradeSymbol";
 import {Money} from "../../../domain/Money";
 
 export interface TradeResponseDTO {

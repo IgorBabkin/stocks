@@ -1,5 +1,5 @@
 export type SymbolId = string;
 
-export interface ISymbol {
+export interface ITradeSymbol {
     id: SymbolId;
 }

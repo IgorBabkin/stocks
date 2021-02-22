@@ -1,18 +1,16 @@
 import {TradeType} from "./TradeType";
-import {UserId} from "./IUser";
-import {SymbolId} from "./ISymbol";
+import {IUser} from "./IUser";
+import {ITradeSymbol} from "./ITradeSymbol";
 import {Money} from "./Money";
 
 export type TradeId = string;
+
 export interface ITrade {
-    "id": TradeId,
-    "type": TradeType,
-    "user": {
-        "id": UserId,
-        "name": string
-    },
-    "symbol": SymbolId,
-    "shares": number,
-    "price": Money,
-    "timestamp": Date,
+    id: TradeId,
+    type: TradeType,
+    user: IUser,
+    symbol: ITradeSymbol,
+    shares: number,
+    price: Money,
+    timestamp: Date,
 }
